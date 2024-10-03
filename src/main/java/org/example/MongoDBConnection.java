@@ -21,7 +21,7 @@ public class MongoDBConnection {
     // Get the MongoClient instance
     public static MongoClient getInstance() {
         if (mongoClient == null) {
-            mongoClient = MongoClients.create("mongodb+srv://yovalfayna98:lPpAMaj1wiYxSIoH@mdb.t9lvb.mongodb.net/?retryWrites=true&w=majority&appName=MDB");
+            mongoClient = MongoClients.create("mongodb+srv://yovalfayna98:lPpAMaj1wiYxSIoH@mdb.t9lvb.mongodb.net/?retryWrites=true&w=majority&appName=MDB&tls=true");
         }
         return mongoClient;
     }
