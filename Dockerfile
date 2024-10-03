@@ -3,18 +3,18 @@ FROM openjdk:19-jdk AS build
 WORKDIR /app
 
 # Copy the Maven wrapper and pom.xml first for caching
-COPY mvnw .
-COPY .mvn .mvn
-COPY pom.xml .
+COPY mvnw .       # Copy Maven wrapper
+COPY .mvn .mvn    # Copy Maven wrapper directory
+COPY pom.xml .    # Copy POM file
+
+# Set execution permission for the Maven wrapper
+RUN chmod +x mvnw
 
 # Download dependencies
 RUN ./mvnw dependency:go-offline
 
 # Copy source code
 COPY src src
-
-# Set execution permission for the Maven wrapper
-RUN chmod +x ./mvnw
 
 # Build the application (skip tests)
 RUN ./mvnw clean package -DskipTests
