@@ -1,0 +1,17 @@
+package org.example;
+import java.util.Random;
+
+
+public class Randomizer {
+    public  static int[][] Randomizer (int[]arr){
+        Random random = new Random();
+        int[][] random_arr = new int[arr[4]][3];
+        for (int i=0;i<arr[4];i++){
+            random_arr[i][0]=random.nextInt(arr[1]-arr[0] +1)+arr[0];
+            random_arr[i][1]=random.nextInt(arr[3]-arr[2] +1)+arr[2];
+            random_arr[i][2]=random.nextInt(arr[6]-arr[5] +1)+arr[5];
+        }
+        return random_arr;
+    }
+
+}
