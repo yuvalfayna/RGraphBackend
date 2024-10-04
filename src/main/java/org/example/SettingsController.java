@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "https://rgraph.onrender.com")  // Enable CORS for requests from the specified origin
+@CrossOrigin(origins = "*")  // Enable CORS for requests from the specified origin
 public class SettingsController {
 
     private static final Logger logger = LoggerFactory.getLogger(SettingsController.class); // Add a logger for better logging
