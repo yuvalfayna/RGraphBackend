@@ -7,6 +7,7 @@ import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
 public class MongoDBConnection {
@@ -37,8 +38,8 @@ public class MongoDBConnection {
             MongoDatabase MDB = mongoClient.getDatabase("RGraph");
             MongoCollection<Document> ArrayCollection = MDB.getCollection("arrays");
             String jarr = objectMapper.writeValueAsString(arr);
-            LocalDateTime now = LocalDateTime.now();
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+            LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Jerusalem"));
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-mm-yyyy hh:mm:ss");
             String formattedDateTime = now.format(formatter);
             Document arrayDoc = new Document("runtime:", formattedDateTime).append("array:", jarr);
             ArrayCollection.insertOne(arrayDoc);
