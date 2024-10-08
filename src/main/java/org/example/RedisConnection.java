@@ -29,7 +29,7 @@ public class RedisConnection {
 
     }
 
-    public static void InsertRedis(int[][]arr,Jedis jedis,Pipeline pipeline){
+    public static void InsertRedis(int[][]arr,double[][]dataarr,Jedis jedis,Pipeline pipeline){
         try (jedis) {
             for (int i = 0; i < arr.length; i++) {
                 List<DataPoint> data = new ArrayList<>();
@@ -38,6 +38,8 @@ public class RedisConnection {
                 pipeline.set("random" + i, jsonArray);
                 pipeline.expire("random" + i, arr[i][2]);
             }
+            String jsonDataArray=objectMapper.writeValueAsString(dataarr);
+            pipeline.set("dataarr",jsonDataArray);
             pipeline.sync();
         } catch (Exception e) {
             e.printStackTrace();

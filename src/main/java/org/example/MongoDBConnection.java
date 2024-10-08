@@ -33,7 +33,7 @@ public class MongoDBConnection {
             mongoClient.close();
         }
     }
-    public static void InsertMongo(int[][]arr){
+    public static void InsertMongo(int[][]arr,double[][]dataarr){
         try {
             MongoDatabase MDB = mongoClient.getDatabase("RGraph");
             MongoCollection<Document> ArrayCollection = MDB.getCollection("arrays");
@@ -42,6 +42,8 @@ public class MongoDBConnection {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
             String formattedDateTime = now.format(formatter);
             Document arrayDoc = new Document("runtime:", formattedDateTime).append("array:", jarr);
+            String jdarr=objectMapper.writeValueAsString(dataarr);
+            arrayDoc.append("data:",jdarr);
             ArrayCollection.insertOne(arrayDoc);
 
         } catch (Exception e) {

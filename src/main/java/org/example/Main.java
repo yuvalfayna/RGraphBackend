@@ -23,8 +23,9 @@ public class Main implements CommandLineRunner {
         Jedis jedis=redisConnection.getJedis();
         Pipeline pipeline = jedis.pipelined();
         int[][] arr = Randomizer.Randomizer(sarr);
-        RedisConnection.InsertRedis(arr,jedis,pipeline);
-        MongoDBConnection.InsertMongo(arr);
+        double [][]dataarr=PointAnalysis.Exporter(arr);
+        RedisConnection.InsertRedis(arr,dataarr,jedis,pipeline);
+        MongoDBConnection.InsertMongo(arr,dataarr);
 
     }
     @Override
