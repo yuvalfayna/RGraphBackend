@@ -40,6 +40,7 @@ public class RedisConnection {
             }
             String jsonDataArray=objectMapper.writeValueAsString(dataarr);
             pipeline.set("dataarr",jsonDataArray);
+            pipeline.expire("dataarr", 60);
             pipeline.sync();
         } catch (Exception e) {
             e.printStackTrace();
