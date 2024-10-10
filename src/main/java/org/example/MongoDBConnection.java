@@ -39,7 +39,7 @@ public class MongoDBConnection {
             MongoCollection<Document> ArrayCollection = MDB.getCollection("arrays");
             String jarr = objectMapper.writeValueAsString(arr);
             LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Jerusalem"));
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
             String formattedDateTime = now.format(formatter);
             Document arrayDoc = new Document("runtime:", formattedDateTime).append("array:", jarr);
             String jdarr=objectMapper.writeValueAsString(dataarr);
