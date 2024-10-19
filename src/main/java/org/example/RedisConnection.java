@@ -1,6 +1,5 @@
 package org.example;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.commons.lang3.RandomStringUtils;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
@@ -33,17 +32,15 @@ public class RedisConnection {
     public static void InsertRedis(int[][]arr,double[][]dataarr,Jedis jedis,Pipeline pipeline){
         try (jedis) {
             for (int i = 0; i < arr.length; i++) {
-                String generatedString = RandomStringUtils.randomAlphanumeric(5);
                 List<DataPoint> data = new ArrayList<>();
                 data.add(new DataPoint(arr[i][0], arr[i][1], arr[i][2]));
                 String jsonArray = objectMapper.writeValueAsString(data);
-                pipeline.set("random" + i+generatedString, jsonArray);
+                pipeline.set("random" + i, jsonArray);
                 pipeline.expire("random" + i, arr[i][2]);
             }
-            String generatedString = RandomStringUtils.randomAlphanumeric(5);
             String jsonDataArray=objectMapper.writeValueAsString(dataarr);
-            pipeline.set("dataarr"+generatedString,jsonDataArray);
-            pipeline.expire("dataarr"+generatedString, 60);
+            pipeline.set("dataarr",jsonDataArray);
+            pipeline.expire("dataarr", 60);
             pipeline.sync();
         } catch (Exception e) {
             e.printStackTrace();
