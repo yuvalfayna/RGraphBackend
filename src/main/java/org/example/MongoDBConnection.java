@@ -33,7 +33,7 @@ public class MongoDBConnection {
             mongoClient.close();
         }
     }
-    public static void InsertMongo(int[][]arr,double[][]dataarr){
+    public static void InsertMongoGraph(int[][]arr,double[][]dataarr){
         try {
             MongoDatabase MDB = mongoClient.getDatabase("RGraph");
             MongoCollection<Document> ArrayCollection = MDB.getCollection("arrays");
@@ -42,6 +42,25 @@ public class MongoDBConnection {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
             String formattedDateTime = now.format(formatter);
             Document arrayDoc = new Document("runtime:", formattedDateTime).append("array:", jarr);
+            String jdarr=objectMapper.writeValueAsString(dataarr);
+            arrayDoc.append("data:",jdarr);
+            ArrayCollection.insertOne(arrayDoc);
+
+        } catch (Exception e) {
+            e.printStackTrace();  // Print the actual error for debugging
+            throw new Error("Connection or insert failed");
+        }
+    }
+
+    public static void InsertMongoMap(double[][]arr,double[][]dataarr){
+        try {
+            MongoDatabase MDB = mongoClient.getDatabase("RGraph");
+            MongoCollection<Document> ArrayCollection = MDB.getCollection("maps");
+            String jarr = objectMapper.writeValueAsString(arr);
+            LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Jerusalem"));
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+            String formattedDateTime = now.format(formatter);
+            Document arrayDoc = new Document("runtime:", formattedDateTime).append("map:", jarr);
             String jdarr=objectMapper.writeValueAsString(dataarr);
             arrayDoc.append("data:",jdarr);
             ArrayCollection.insertOne(arrayDoc);

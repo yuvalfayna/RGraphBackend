@@ -28,19 +28,37 @@ public class RedisConnection {
         }
 
     }
-
-    public static void InsertRedis(int[][]arr,double[][]dataarr,Jedis jedis,Pipeline pipeline){
+    public static void InsertRedisGraph(int[][]arr,double[][]dataarr,String ip,Jedis jedis,Pipeline pipeline){
         try (jedis) {
             for (int i = 0; i < arr.length; i++) {
                 List<DataPoint> data = new ArrayList<>();
                 data.add(new DataPoint(arr[i][0], arr[i][1], arr[i][2]));
                 String jsonArray = objectMapper.writeValueAsString(data);
-                pipeline.set("random" + i, jsonArray);
-                pipeline.expire("random" + i, arr[i][2]);
+                pipeline.set(ip+"#random" + i, jsonArray);
+                pipeline.expire(ip+"#random" + i, arr[i][2]);
             }
             String jsonDataArray=objectMapper.writeValueAsString(dataarr);
-            pipeline.set("dataarr",jsonDataArray);
-            pipeline.expire("dataarr", 60);
+            pipeline.set(ip+"#dataarr",jsonDataArray);
+            pipeline.expire(ip+"#dataarr", 60);
+            pipeline.sync();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            jedis.close();
+        }
+    }
+    public static void InsertRedisMap(double[][]arr,double[][]dataarr,String ip,Jedis jedis,Pipeline pipeline){
+        try (jedis) {
+            for (int i = 0; i < arr.length; i++) {
+                List<MapPoint> data = new ArrayList<>();
+                data.add(new MapPoint(arr[i][0], arr[i][1], arr[i][2]));
+                String jsonArray = objectMapper.writeValueAsString(data);
+                pipeline.set(ip+"#maprandom" + i, jsonArray);
+                pipeline.expire(ip+"#maprandom"+i,(int) arr[i][2]);
+            }
+            String jsonDataArray=objectMapper.writeValueAsString(dataarr);
+            pipeline.set(ip+"#dataarrmap",jsonDataArray);
+            pipeline.expire(ip+"#dataarrmap", 60);
             pipeline.sync();
         } catch (Exception e) {
             e.printStackTrace();

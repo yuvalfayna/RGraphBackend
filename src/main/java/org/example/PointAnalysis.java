@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.IntSummaryStatistics;
 
 public class PointAnalysis {
-    public static double[][] Exporter(int[][] arr) {
+    public static double[][] GraphAnalysisExporter(int[][] arr) {
         double[] average = AvarageXY(arr);
         double[] standardDeviation = StandardDeviationXY(arr);
         double[] density=DensityXY(arr);
