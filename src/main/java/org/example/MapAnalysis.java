@@ -30,7 +30,7 @@ public class MapAnalysis {
         avgx = xsum / arr.length;
         avgy = ysum / arr.length;
         avgz = zsum / arr.length;
-        double lat = (Math.asin((avgz) / (Math.sqrt(Math.pow(avgx, 2) + Math.pow(avgy, 2) + Math.pow(avgz, 2))))) / pai180;
+        double lat = Math.asin(Math.min(1, Math.max(-1, avgz))) / pai180;
         double lng = (Math.atan2(avgy, avgx)) / pai180;
         return new double[]{lat, lng};
     }
