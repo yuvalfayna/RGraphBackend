@@ -6,13 +6,18 @@ import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation;
 import java.util.Arrays;
 import java.util.IntSummaryStatistics;
 
-public class PointAnalysis {
-    public static double[][] GraphAnalysisExporter(int[][] arr) {
-        double[] average = AvarageXY(arr);
-        double[] standardDeviation = StandardDeviationXY(arr);
-        double[] density = DensityXY(arr);
-        double[] distance = DistanceXY(arr);
-        return new double[][]{average, standardDeviation, density, distance};
+public class AnalyzeGraphInstance {
+
+    private double[] Avarage;
+    private double[] SD;
+    private double[] Density;
+    private double[] Distance;
+
+    public AnalyzeGraphInstance(int[][] arr) {
+        this.Avarage = AvarageXY(arr);
+        this.SD = StandardDeviationXY(arr);
+        this.Density = DensityXY(arr);
+        this.Distance = DistanceXY(arr);
     }
 
     public static double[] AvarageXY(int[][] arr) {
@@ -68,5 +73,42 @@ public class PointAnalysis {
         }
         return new double[]{mind, maxd};
     }
+
+    public double[] getAvarage() {
+        return Avarage;
+    }
+
+    public void setAvarage(double[] avarage) {
+        Avarage = avarage;
+    }
+
+    public double[] getStandardDeviation() {
+        return SD;
+    }
+
+    public void setStandardDeviation(double[] standardDeviation) {
+        SD = standardDeviation;
+    }
+
+    public double[] getDensity() {
+        return Density;
+    }
+
+    public void setDensity(double[] density) {
+        Density = density;
+    }
+
+    public double[] getDistance() {
+        return Distance;
+    }
+
+    public void setDistance(double[] distance) {
+        Distance = distance;
+    }
+
+    public double[][] toArray() {
+        return new double[][]{this.Avarage, this.SD, this.Density, this.Distance};
+    }
+
 
 }

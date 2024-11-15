@@ -1,4 +1,5 @@
 package org.example;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,15 +19,14 @@ public class SettingsController {
     }
 
 
-
     @PostMapping("/settings")
     public String saveSettings(@RequestBody SettingsRequest settingsRequest) {
         try {
             int[] settings = settingsRequest.getSettings();
             String ip = settingsRequest.getIp();
-            logger.info("Received graph data settings: {}", (Object) settings);
+            logger.info("Received graph data settings: {}", settings);
             logger.info(ip);
-            main.GraphRun(settings,ip);
+            main.GraphRun(settings, ip);
         } catch (Exception e) {
             logger.error("Error processing graph data settings: {}", e.getMessage());
             return "Error processing settings";
@@ -38,17 +38,17 @@ public class SettingsController {
     @PostMapping("/settingsmap")
     public String saveSettingsMap(@RequestBody SettingsRequestMap settingsRequestMap) {
         try {
-                double[] settings = settingsRequestMap.getSettings();
-                String ip = settingsRequestMap.getIp();
-                logger.info("Received graph data settings: {}", (Object) settings);
-                logger.info(ip);
-                main.MapRun(settings, ip);
-            } catch (Exception e) {
-                logger.error("Error processing graph data settings: {}", e.getMessage());
-                return "Error processing settings";
-            }
-
-            return "Settings saved and processed successfully";
-
+            double[] settings = settingsRequestMap.getSettings();
+            String ip = settingsRequestMap.getIp();
+            logger.info("Received map data settings: {}", settings);
+            logger.info(ip);
+            main.MapRun(settings, ip);
+        } catch (Exception e) {
+            logger.error("Error processing map data settings: {}", e.getMessage());
+            return "Error processing settings";
         }
+
+        return "Settings saved and processed successfully";
+
     }
+}

@@ -1,4 +1,5 @@
 package org.example;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
@@ -12,12 +13,13 @@ import java.time.format.DateTimeFormatter;
 
 public class MongoDBConnection {
 
-    private static MongoClient mongoClient = MongoClients.create("mongodb+srv://yovalfayna98:lPpAMaj1wiYxSIoH@mdb.t9lvb.mongodb.net/?retryWrites=true&w=majority&appName=MDB");;
     private static final ObjectMapper objectMapper = new ObjectMapper();
+    private static MongoClient mongoClient = MongoClients.create("mongodb+srv://yovalfayna98:lPpAMaj1wiYxSIoH@mdb.t9lvb.mongodb.net/?retryWrites=true&w=majority&appName=MDB");
 
 
     // Private constructor to prevent instantiation
-    private MongoDBConnection() {}
+    private MongoDBConnection() {
+    }
 
     // Get the MongoClient instance
     public static MongoClient getInstance() {
@@ -33,7 +35,8 @@ public class MongoDBConnection {
             mongoClient.close();
         }
     }
-    public static void InsertMongoGraph(int[][]arr,double[][]dataarr){
+
+    public static void InsertMongoGraph(int[][] arr, double[][] dataarr) {
         try {
             MongoDatabase MDB = mongoClient.getDatabase("RGraph");
             MongoCollection<Document> ArrayCollection = MDB.getCollection("arrays");
@@ -42,8 +45,8 @@ public class MongoDBConnection {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
             String formattedDateTime = now.format(formatter);
             Document arrayDoc = new Document("runtime:", formattedDateTime).append("array:", jarr);
-            String jdarr=objectMapper.writeValueAsString(dataarr);
-            arrayDoc.append("data:",jdarr);
+            String jdarr = objectMapper.writeValueAsString(dataarr);
+            arrayDoc.append("data:", jdarr);
             ArrayCollection.insertOne(arrayDoc);
 
         } catch (Exception e) {
@@ -52,7 +55,7 @@ public class MongoDBConnection {
         }
     }
 
-    public static void InsertMongoMap(double[][]arr,double[][]dataarr){
+    public static void InsertMongoMap(double[][] arr, double[][] dataarr) {
         try {
             MongoDatabase MDB = mongoClient.getDatabase("RGraph");
             MongoCollection<Document> ArrayCollection = MDB.getCollection("maps");
@@ -61,8 +64,8 @@ public class MongoDBConnection {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
             String formattedDateTime = now.format(formatter);
             Document arrayDoc = new Document("runtime:", formattedDateTime).append("map:", jarr);
-            String jdarr=objectMapper.writeValueAsString(dataarr);
-            arrayDoc.append("data:",jdarr);
+            String jdarr = objectMapper.writeValueAsString(dataarr);
+            arrayDoc.append("data:", jdarr);
             ArrayCollection.insertOne(arrayDoc);
 
         } catch (Exception e) {

@@ -6,15 +6,18 @@ import net.sf.geographiclib.PolygonResult;
 
 import java.util.Arrays;
 
-public class MapAnalysis {
-    public static double[][] MapAnalysisExporter(double[][] arr) {
-        double[] centroid = Centroid(arr);
-        double[] area = Area(arr);
-        double[] distance = Distance(arr);
-        return new double[][]{centroid, area, distance};
+public class AnalyzeMapInstance {
+    private double[] Centroid;
+    private double[] Area;
+    private double[] Distance;
+
+    public AnalyzeMapInstance(double[][] arr) {
+        this.Centroid = Centroid(arr);
+        this.Area = Area(arr);
+        this.Distance = Distance(arr);
     }
 
-    public static double[] Centroid(double[][] arr) {
+    public double[] Centroid(double[][] arr) {
         double radlat = 0, radlng = 0;
         double pai180 = Math.PI / 180;
         double x = 0, y = 0, z = 0;
@@ -37,8 +40,8 @@ public class MapAnalysis {
         return new double[]{lat, lng};
     }
 
-    public static double[] Area(double[][] arr) {
-        double[] centroid = Centroid(arr);
+    public double[] Area(double[][] arr) {
+        double[] centroid = this.getCentroid();
         Arrays.sort(arr, (a, b) -> {
             double angleA = Math.atan2(a[1] - centroid[1], a[0] - centroid[0]);
             double angleB = Math.atan2(b[1] - centroid[1], b[0] - centroid[0]);
@@ -58,7 +61,7 @@ public class MapAnalysis {
     }
 
 
-    public static double[] Distance(double[][] arr) {
+    public double[] Distance(double[][] arr) {
         double mind = Double.MAX_VALUE;
         double maxd = 0;
         double dlng = 0;
@@ -80,5 +83,33 @@ public class MapAnalysis {
             }
         }
         return new double[]{mind, maxd};
+    }
+
+    public double[] getCentroid() {
+        return Centroid;
+    }
+
+    public void setCentroid(double[] centroid) {
+        Centroid = centroid;
+    }
+
+    public double[] getArea() {
+        return Area;
+    }
+
+    public void setArea(double[] area) {
+        Area = area;
+    }
+
+    public double[] getDistance() {
+        return Distance;
+    }
+
+    public void setDistance(double[] distance) {
+        Distance = distance;
+    }
+
+    public double[][] ToArray() {
+        return new double[][]{this.Centroid, this.Area, this.Distance};
     }
 }
