@@ -1,3 +1,4 @@
+// מחלקה האחראית טיפול באובייקטים של מסוג נקודה בודדת בדף מפה
 package org.example;
 
 public class MapPoint {

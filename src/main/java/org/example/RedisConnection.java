@@ -1,3 +1,4 @@
+// מחלקה האחראית על יצירת הCONNECTION עם הREDIS והכנסת המידע לREDIS
 package org.example;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -10,15 +11,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RedisConnection {
-    private static final ObjectMapper objectMapper = new ObjectMapper();
-    private final JedisPool jedisPool;
-
+    private static final ObjectMapper objectMapper = new ObjectMapper(); // לצורך כתיבת המידע בפורמט JSON
+    private final JedisPool jedisPool; // אובייקט המשמש לניהול חיבורים עם הREDIS
+    // קונסטרקטור של המחלקה היוצר חיבור עם הREDIS
     public RedisConnection() {
         String redisUrl = "redis://default:p7LS233UJKNl8F4eCSrb8OSWnluC9MLB@redis-19666.c16.us-east-1-3.ec2.redns.redis-cloud.com:19666";
         JedisPoolConfig poolConfig = new JedisPoolConfig();
         this.jedisPool = new JedisPool(poolConfig, redisUrl);
     }
-
+    // פעולה האחראית על הכנסת מידע של מופע לתוך הרדיס בדף הגרף
     public static void InsertRedisGraph(int[][] arr, double[][] dataarr, String ip, Jedis jedis, Pipeline pipeline) {
         try (jedis) {
             for (int i = 0; i < arr.length; i++) {
@@ -38,7 +39,7 @@ public class RedisConnection {
             jedis.close();
         }
     }
-
+    // פעולה האחראית על הכנסת מידע של מופע לתוך הרדיס בדף המפה
     public static void InsertRedisMap(double[][] arr, double[][] dataarr, String ip, Jedis jedis, Pipeline pipeline) {
         try (jedis) {
             for (int i = 0; i < arr.length; i++) {

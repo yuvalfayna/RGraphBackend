@@ -1,3 +1,4 @@
+// מחלקה האחראית טיפול באובייקטים של מסוג נקודה בודדת בדף גרף
 package org.example;
 
 public class DataPoint {
@@ -5,14 +6,12 @@ public class DataPoint {
     private int y;
     private int seconds;
 
-    // בנאים
     public DataPoint(int x, int y, int seconds) {
         this.x = x;
         this.y = y;
         this.seconds = seconds;
     }
 
-    // Getters ו-Setters
     public int getX() {
         return x;
     }

@@ -1,3 +1,4 @@
+// מחלקה המשתמשת בSPRING BOOT על מנת לנהל בקשות POST מהצד לקוח לכיוון הצד שרת
 package org.example;
 
 import org.slf4j.Logger;
@@ -7,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "*")  // Enable CORS for requests from the specified origin
+@CrossOrigin(origins = "*")
 public class SettingsController {
 
     private static final Logger logger = LoggerFactory.getLogger(SettingsController.class);
@@ -18,15 +19,15 @@ public class SettingsController {
         this.main = main;
     }
 
-
+    //ניהול בקשות לקוח בדף המפה
     @PostMapping("/settings")
     public String saveSettings(@RequestBody SettingsRequest settingsRequest) {
         try {
-            int[] settings = settingsRequest.getSettings();
-            String ip = settingsRequest.getIp();
+            int[] settings = settingsRequest.getSettings();// קבלת מידע של ההרצה שאותו הגדיר הלקוח
+            String ip = settingsRequest.getIp();// קבלת כתובת הIP של הלקוח
             logger.info("Received graph data settings: {}", settings);
             logger.info(ip);
-            main.GraphRun(settings, ip);
+            main.GraphRun(settings, ip);// קריאה לפעולה האחראית על הרצת המופע
         } catch (Exception e) {
             logger.error("Error processing graph data settings: {}", e.getMessage());
             return "Error processing settings";
@@ -38,11 +39,11 @@ public class SettingsController {
     @PostMapping("/settingsmap")
     public String saveSettingsMap(@RequestBody SettingsRequestMap settingsRequestMap) {
         try {
-            double[] settings = settingsRequestMap.getSettings();
-            String ip = settingsRequestMap.getIp();
+            double[] settings = settingsRequestMap.getSettings();// קבלת מידע של ההרצה שאותו הגדיר הלקוח
+            String ip = settingsRequestMap.getIp();// קבלת כתובת הIP של הלקוח
             logger.info("Received map data settings: {}", settings);
             logger.info(ip);
-            main.MapRun(settings, ip);
+            main.MapRun(settings, ip);// קריאה לפעולה האחראית על הרצת המופע
         } catch (Exception e) {
             logger.error("Error processing map data settings: {}", e.getMessage());
             return "Error processing settings";

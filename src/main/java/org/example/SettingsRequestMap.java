@@ -1,8 +1,9 @@
+// מחלקה האחראית טיפול באובייקטים של בקשת משתמש בדף מפה
 package org.example;
 
 public class SettingsRequestMap {
-    private double[] settings; // מערך של מספרים
-    private String ip; // מחרוזת
+    private double[] settings;
+    private String ip;
 
     public SettingsRequestMap() {
     }

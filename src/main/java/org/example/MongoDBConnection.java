@@ -1,3 +1,4 @@
+// מחלקה האחראית על יצירת הCONNECTION עם הMONGODB והכנסת המידע לMONGODB
 package org.example;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -13,15 +14,13 @@ import java.time.format.DateTimeFormatter;
 
 public class MongoDBConnection {
 
-    private static final ObjectMapper objectMapper = new ObjectMapper();
+    private static final ObjectMapper objectMapper = new ObjectMapper();// לצורך כתיבת המידע בפורמט JSON
     private static MongoClient mongoClient = MongoClients.create("mongodb+srv://yovalfayna98:lPpAMaj1wiYxSIoH@mdb.t9lvb.mongodb.net/?retryWrites=true&w=majority&appName=MDB");
 
 
-    // Private constructor to prevent instantiation
     private MongoDBConnection() {
     }
-
-    // Get the MongoClient instance
+    // יצירת החיבור הMONGODB
     public static MongoClient getInstance() {
         if (mongoClient == null) {
             mongoClient = MongoClients.create("mongodb+srv://yovalfayna98:lPpAMaj1wiYxSIoH@mdb.t9lvb.mongodb.net/?retryWrites=true&w=majority&appName=MDB&tls=true");
@@ -29,13 +28,12 @@ public class MongoDBConnection {
         return mongoClient;
     }
 
-    // Close the MongoClient connection (optional)
     public static void close() {
         if (mongoClient != null) {
             mongoClient.close();
         }
     }
-
+    // פעולה האחראית על הכנסת מידע של מופע לתוך הרדיס בדף הגרף
     public static void InsertMongoGraph(int[][] arr, double[][] dataarr) {
         try {
             MongoDatabase MDB = mongoClient.getDatabase("RGraph");
@@ -54,7 +52,7 @@ public class MongoDBConnection {
             throw new Error("Connection or insert failed");
         }
     }
-
+    // פעולה האחראית על הכנסת מידע של מופע לתוך הרדיס בדף המפה
     public static void InsertMongoMap(double[][] arr, double[][] dataarr) {
         try {
             MongoDatabase MDB = mongoClient.getDatabase("RGraph");

@@ -1,3 +1,4 @@
+// המחלקה האחראית על תהליך של בניית המופע
 package org.example;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,26 +16,27 @@ public class Main implements CommandLineRunner {
         SpringApplication.run(Main.class, args);
     }
 
+    // פעולה האחראית על יצירת מופע בדף הגרף
     public void GraphRun(int[] sarr, String ip) {
-        int[][] arr = Randomizer.GraphRandomizer(sarr);
-        AnalyzeGraphInstance analyzeGraphInstance = new AnalyzeGraphInstance(arr);
+        int[][] arr = Randomizer.GraphRandomizer(sarr);// יצירת מערך המכיל ערכים בטווח הערכים שהלקוח הגדיר
+        AnalyzeGraphInstance analyzeGraphInstance = new AnalyzeGraphInstance(arr);// יצירת אובייקט המכיל נתונים מתמטיים על המופע
         double[][] dataarr = analyzeGraphInstance.toArray();
-        RedisConnection redisConnection = new RedisConnection();
+        RedisConnection redisConnection = new RedisConnection();// יצירת חיבור מול הREDIS לצורך הכנסת המידע של המופע לתוך הREDIS
         Jedis jedis = redisConnection.getJedis();
         Pipeline pipeline = jedis.pipelined();
-        RedisConnection.InsertRedisGraph(arr, dataarr, ip, jedis, pipeline);
-        MongoDBConnection.InsertMongoGraph(arr, dataarr);
+        RedisConnection.InsertRedisGraph(arr, dataarr, ip, jedis, pipeline);// הכנסת המידע לתוך הREDIS
+        MongoDBConnection.InsertMongoGraph(arr, dataarr);// הכנסת המידע לתוך הMONGODB
     }
-
+    // פעולה האחראית על יצירת מופע בדף המפה
     public void MapRun(double[] sarr, String ip) {
-        double[][] arr = Randomizer.MapRandomizer(sarr);
-        AnalyzeMapInstance analyzeMapInstance =new AnalyzeMapInstance(arr);
+        double[][] arr = Randomizer.MapRandomizer(sarr);// יצירת מערך המכיל ערכים בטווח הערכים שהלקוח הגדיר
+        AnalyzeMapInstance analyzeMapInstance =new AnalyzeMapInstance(arr);// יצירת אובייקט המכיל נתונים מתמטיים על המופע
         double[][] dataarr = analyzeMapInstance.ToArray();
-        RedisConnection redisConnection = new RedisConnection();
+        RedisConnection redisConnection = new RedisConnection();// יצירת חיבור מול הREDIS לצורך הכנסת המידע של המופע לתוך הREDIS
         Jedis jedis = redisConnection.getJedis();
         Pipeline pipeline = jedis.pipelined();
-        RedisConnection.InsertRedisMap(arr, dataarr, ip, jedis, pipeline);
-        MongoDBConnection.InsertMongoMap(arr, dataarr);
+        RedisConnection.InsertRedisMap(arr, dataarr, ip, jedis, pipeline);// הכנסת המידע לתוך הREDIS
+        MongoDBConnection.InsertMongoMap(arr, dataarr);// הכנסת המידע לתוך הMONGODB
     }
 
 

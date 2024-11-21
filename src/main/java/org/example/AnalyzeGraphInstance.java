@@ -1,3 +1,4 @@
+// מחלקה האחראית על יצירת אובייקט וחישוב של נתוני מופע בדף המפה
 package org.example;
 
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
@@ -8,11 +9,12 @@ import java.util.IntSummaryStatistics;
 
 public class AnalyzeGraphInstance {
 
-    private double[] Avarage;
-    private double[] SD;
-    private double[] Density;
-    private double[] Distance;
+    private double[] Avarage;// ממוצע
+    private double[] SD;//סטיית תקן
+    private double[] Density;// צפיפות
+    private double[] Distance;//מרחק
 
+    // פעולה בונה של אובייקט
     public AnalyzeGraphInstance(int[][] arr) {
         this.Avarage = AvarageXY(arr);
         this.SD = StandardDeviationXY(arr);

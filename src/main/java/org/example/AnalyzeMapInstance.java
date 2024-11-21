@@ -1,3 +1,4 @@
+// מחלקה האחראית על יצירת אובייקט וחישוב של נתוני מופע בדף המפה
 package org.example;
 
 import net.sf.geographiclib.Geodesic;
@@ -7,10 +8,11 @@ import net.sf.geographiclib.PolygonResult;
 import java.util.Arrays;
 
 public class AnalyzeMapInstance {
-    private double[] Centroid;
-    private double[] Area;
-    private double[] Distance;
+    private double[] Centroid;// נקודת המרכז
+    private double[] Area;// שטח
+    private double[] Distance;// מרחק
 
+    // פעולה בונה של אובייקט
     public AnalyzeMapInstance(double[][] arr) {
         this.Centroid = Centroid(arr);
         this.Area = Area(arr);

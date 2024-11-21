@@ -1,8 +1,9 @@
+// מחלקה האחראית טיפול באובייקטים של בקשת משתמש בדף הגרף
 package org.example;
 
 public class SettingsRequest {
-    private int[] settings; // מערך של מספרים
-    private String ip; // מחרוזת
+    private int[] settings;
+    private String ip;
 
     public SettingsRequest() {
     }
