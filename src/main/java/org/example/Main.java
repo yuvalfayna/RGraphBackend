@@ -21,10 +21,8 @@ public class Main implements CommandLineRunner {
         int[][] arr = Randomizer.GraphRandomizer(sarr);// יצירת מערך המכיל ערכים בטווח הערכים שהלקוח הגדיר
         AnalyzeGraphInstance analyzeGraphInstance = new AnalyzeGraphInstance(arr);// יצירת אובייקט המכיל נתונים מתמטיים על המופע
         double[][] dataarr = analyzeGraphInstance.toArray();
-        RedisConnection redisConnection = new RedisConnection();// יצירת חיבור מול הREDIS לצורך הכנסת המידע של המופע לתוך הREDIS
-        Jedis jedis = redisConnection.getJedis();
-        Pipeline pipeline = jedis.pipelined();
-        RedisConnection.InsertRedisGraph(arr, dataarr, ip, jedis, pipeline);// הכנסת המידע לתוך הREDIS
+        Jedis jedis = RedisConnection.getJedis();
+        RedisConnection.InsertRedisGraph(arr, dataarr, ip, jedis);// הכנסת המידע לתוך הREDIS
         MongoDBConnection.InsertMongoGraph(arr, dataarr);// הכנסת המידע לתוך הMONGODB
     }
     // פעולה האחראית על יצירת מופע בדף המפה
@@ -32,10 +30,8 @@ public class Main implements CommandLineRunner {
         double[][] arr = Randomizer.MapRandomizer(sarr);// יצירת מערך המכיל ערכים בטווח הערכים שהלקוח הגדיר
         AnalyzeMapInstance analyzeMapInstance =new AnalyzeMapInstance(arr);// יצירת אובייקט המכיל נתונים מתמטיים על המופע
         double[][] dataarr = analyzeMapInstance.ToArray();
-        RedisConnection redisConnection = new RedisConnection();// יצירת חיבור מול הREDIS לצורך הכנסת המידע של המופע לתוך הREDIS
-        Jedis jedis = redisConnection.getJedis();
-        Pipeline pipeline = jedis.pipelined();
-        RedisConnection.InsertRedisMap(arr, dataarr, ip, jedis, pipeline);// הכנסת המידע לתוך הREDIS
+        Jedis jedis = RedisConnection.getJedis();
+        RedisConnection.InsertRedisMap(arr, dataarr, ip, jedis);// הכנסת המידע לתוך הREDIS
         MongoDBConnection.InsertMongoMap(arr, dataarr);// הכנסת המידע לתוך הMONGODB
     }
 

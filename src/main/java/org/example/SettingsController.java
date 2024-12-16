@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import redis.clients.jedis.Jedis;
 
 @RestController
 @RequestMapping("/api")
@@ -50,6 +51,37 @@ public class SettingsController {
         }
 
         return "Settings saved and processed successfully";
+    }
 
+    @PostMapping("/redisgraph")
+    public String[] postRedisGraph(@RequestBody GraphRedisRequset graphRedisRequset) {
+        try {
+            Jedis jedis = RedisConnection.getJedis();
+            String ip = graphRedisRequset.getIp();
+            logger.info(ip);
+            String points = jedis.get("random#" + ip);
+            String data = jedis.get("dataarr#" + ip);
+            logger.info(points+"----"+data);
+            jedis.close();
+            return new String[]{points, data};
+        } catch (Exception e) {
+            logger.error("Error getting data from redis graph:{}", e.getMessage());
+            return new String[]{"Error getting data from redis graph{}", e.getMessage()};
+        }
+    }
+
+    @PostMapping("/redismap")
+    public String[] postRedisMap(@RequestBody GraphRedisRequset graphRedisRequset) {
+        try {
+            Jedis jedis = RedisConnection.getJedis();
+            String ip = graphRedisRequset.getIp();
+            String points = jedis.get("maprandom#" + ip);
+            String data = jedis.get("dataarrmap#" + ip);
+            jedis.close();
+            return new String[]{points, data};
+        } catch (Exception e) {
+            logger.error("Error getting data from redis map:{}", e.getMessage());
+            return new String[]{"Error getting data from redis map{}", e.getMessage()};
+        }
     }
 }
