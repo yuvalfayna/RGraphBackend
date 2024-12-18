@@ -42,8 +42,8 @@ public class MongoDBConnection {
             LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Jerusalem"));
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
             String formattedDateTime = now.format(formatter);
-            Document arrayDoc = new Document("runtime:", formattedDateTime).append("array:", jarr);
             String jdarr = objectMapper.writeValueAsString(dataarr);
+            Document arrayDoc = new Document("runtime:", formattedDateTime).append("array:", jarr);
             arrayDoc.append("data:", jdarr);
             ArrayCollection.insertOne(arrayDoc);
 

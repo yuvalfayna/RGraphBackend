@@ -1,11 +1,23 @@
 // מחלקה המשתמשת בSPRING BOOT על מנת לנהל בקשות POST מהצד לקוח לכיוון הצד שרת
 package org.example;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Projections;
+import com.mongodb.client.model.Sorts;
+import org.bson.Document;
+import org.bson.conversions.Bson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import redis.clients.jedis.Jedis;
+
+import java.util.ArrayList;
+
 
 @RestController
 @RequestMapping("/api")
@@ -54,10 +66,10 @@ public class SettingsController {
     }
 
     @PostMapping("/redisgraph")
-    public String[] postRedisGraph(@RequestBody GraphRedisRequset graphRedisRequset) {
+    public String[] postRedisGraph(@RequestBody RedisRequset RedisRequset) {
         try {
             Jedis jedis = RedisConnection.getJedis();
-            String ip = graphRedisRequset.getIp();
+            String ip = RedisRequset.getIp();
             logger.info(ip);
             String points = jedis.get("random#" + ip);
             String data = jedis.get("dataarr#" + ip);
@@ -71,10 +83,10 @@ public class SettingsController {
     }
 
     @PostMapping("/redismap")
-    public String[] postRedisMap(@RequestBody GraphRedisRequset graphRedisRequset) {
+    public String[] postRedisMap(@RequestBody RedisRequset RedisRequset) {
         try {
             Jedis jedis = RedisConnection.getJedis();
-            String ip = graphRedisRequset.getIp();
+            String ip = RedisRequset.getIp();
             String points = jedis.get("maprandom#" + ip);
             String data = jedis.get("dataarrmap#" + ip);
             jedis.close();
@@ -82,6 +94,60 @@ public class SettingsController {
         } catch (Exception e) {
             logger.error("Error getting data from redis map:{}", e.getMessage());
             return new String[]{"Error getting data from redis map{}", e.getMessage()};
+        }
+    }
+
+    @PostMapping("/mongodbgraph")
+    public String postMongoDBGraph(){
+        ArrayList<Document> arrayList=new ArrayList<Document>();
+        MongoClient mongoClient = MongoDBConnection.getInstance();
+        MongoDatabase MDB = mongoClient.getDatabase("RGraph");
+        MongoCollection<Document> ArrayCollection = MDB.getCollection("arrays");
+        Bson projectionFields = Projections.fields(
+                Projections.include("array:", "data:","runtime:"),
+                Projections.excludeId());
+        try (MongoCursor<Document> mongoCursor = ArrayCollection.find()
+                .projection(projectionFields)
+                .sort(Sorts.descending("runtime:"))
+            .iterator())
+        {
+            while (mongoCursor.hasNext()) {
+                arrayList.add(mongoCursor.next());
+            }
+        }
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            return objectMapper.writeValueAsString(arrayList);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+    @PostMapping("/mongodbmap")
+    public String postMongoDBMap(){
+        ArrayList<Document> arrayList=new ArrayList<Document>();
+        MongoClient mongoClient = MongoDBConnection.getInstance();
+        MongoDatabase MDB = mongoClient.getDatabase("RGraph");
+        MongoCollection<Document> ArrayCollection = MDB.getCollection("maps");
+        Bson projectionFields = Projections.fields(
+                Projections.include("array:", "data:","runtime:"),
+                Projections.excludeId());
+        try (MongoCursor<Document> mongoCursor = ArrayCollection.find()
+                .sort(Sorts.descending("runtime:"))
+                .projection(projectionFields)
+                .iterator()) {
+            while (mongoCursor.hasNext()) {
+                arrayList.add(mongoCursor.next());
+            }
+        }
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            return objectMapper.writeValueAsString(arrayList);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return "Error on post data map";
         }
     }
 }

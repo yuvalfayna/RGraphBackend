@@ -1,6 +1,6 @@
 package org.example;
 
-public class GraphRedisRequset {
+public class RedisRequset {
     private String ip;
     public String getIp() {
         return ip;
