@@ -131,7 +131,7 @@ public class SettingsController {
         MongoDatabase MDB = mongoClient.getDatabase("RGraph");
         MongoCollection<Document> ArrayCollection = MDB.getCollection("maps");
         Bson projectionFields = Projections.fields(
-                Projections.include("array:", "data:","runtime:"),
+                Projections.include("map:", "data:","runtime:"),
                 Projections.excludeId());
         try (MongoCursor<Document> mongoCursor = ArrayCollection.find()
                 .sort(Sorts.descending("runtime:"))
