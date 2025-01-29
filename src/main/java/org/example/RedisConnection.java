@@ -26,6 +26,7 @@ public class RedisConnection {
                     max = ints[2];
                 }
             }
+            data.sort((a,b)->{return Integer.compare(b.getSeconds(), a.getSeconds());});
             String jsonArray = objectMapper.writeValueAsString(data);
             jedis.set("random#" + ip, jsonArray);
             jedis.expire("random#" + ip, max);
@@ -49,6 +50,7 @@ public class RedisConnection {
                     max = (int) doubles[2];
                 }
             }
+            data.sort((a,b)->{return Double.compare(b.getSeconds(), a.getSeconds());});
             String jsonArray = objectMapper.writeValueAsString(data);
             jedis.set("maprandom#" + ip, jsonArray);
             jedis.expire("maprandom#" + ip, max);
